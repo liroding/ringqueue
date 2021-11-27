@@ -20,12 +20,13 @@
 
 struct ring_buffer
 {
-    void         *buffer;     //缓冲区
-    uint32_t     size;       //大小
-    uint32_t     in;         //入口位置
-    uint32_t       out;        //出口位置
+    void            *buffer;     //缓冲区
+    uint32_t        size;       //大小
+    uint32_t        in;         //入口位置
+    uint32_t        out;        //出口位置
     pthread_mutex_t *f_lock;    //互斥锁
 };
+
 //初始化缓冲区
 struct ring_buffer* ring_buffer_init(void *buffer, uint32_t size, pthread_mutex_t *f_lock)
 {
@@ -33,11 +34,12 @@ struct ring_buffer* ring_buffer_init(void *buffer, uint32_t size, pthread_mutex_
     struct ring_buffer *ring_buf = NULL;
     if (!is_power_of_2(size))
     {
-    fprintf(stderr,"size must be power of 2.\n");
+   	fprintf(stderr,"size must be power of 2.\n");
         return ring_buf;
     }
     ring_buf = (struct ring_buffer *)malloc(sizeof(struct ring_buffer));
     if (!ring_buf)
+
     {
         fprintf(stderr,"Failed to malloc memory,errno:%u,reason:%s",
             errno, strerror(errno));
@@ -48,7 +50,7 @@ struct ring_buffer* ring_buffer_init(void *buffer, uint32_t size, pthread_mutex_
     ring_buf->size = size;
     ring_buf->in = 0;
     ring_buf->out = 0;
-        ring_buf->f_lock = f_lock;
+    ring_buf->f_lock = f_lock;
     return ring_buf;
 }
 //释放缓冲区
@@ -56,13 +58,13 @@ void ring_buffer_free(struct ring_buffer *ring_buf)
 {
     if (ring_buf)
     {
-    if (ring_buf->buffer)
-    {
-        free(ring_buf->buffer);
-        ring_buf->buffer = NULL;
-    }
-    free(ring_buf);
-    ring_buf = NULL;
+   	 if (ring_buf->buffer)
+   	 {
+   	     free(ring_buf->buffer);
+   	     ring_buf->buffer = NULL;
+   	 }
+   	 free(ring_buf);
+   	 ring_buf = NULL;
     }
 }
 
