@@ -20,7 +20,8 @@
 
 struct ring_buffer
 {
-    void            *buffer;     //缓冲区
+    uint8_t         *name;      //ring name
+    void            *buffer;    //缓冲区
     uint32_t        size;       //大小
     uint32_t        in;         //入口位置
     uint32_t        out;        //出口位置
@@ -28,7 +29,7 @@ struct ring_buffer
 };
 
 //初始化缓冲区
-struct ring_buffer* ring_buffer_init(void *buffer, uint32_t size, pthread_mutex_t *f_lock)
+struct ring_buffer* ring_buffer_init(void *name,void *buffer, uint32_t size, pthread_mutex_t *f_lock)
 {
     assert(buffer);
     struct ring_buffer *ring_buf = NULL;
@@ -46,6 +47,7 @@ struct ring_buffer* ring_buffer_init(void *buffer, uint32_t size, pthread_mutex_
         return ring_buf;
     }
     memset(ring_buf, 0, sizeof(struct ring_buffer));
+    ring_buf->name = name;
     ring_buf->buffer = buffer;
     ring_buf->size = size;
     ring_buf->in = 0;

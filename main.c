@@ -50,7 +50,7 @@ void *consumer_proc(void *arg)
         printf("------------------------------------------\n");
         printf("get a student info from ring buffer.\n");
         ring_buffer_get(ring_buf, (void *)&stu_info, sizeof(student_info));
-        printf("ring buffer length: %u\n", ring_buffer_len(ring_buf));
+        printf("[%s]ring buffer length: %u\n",ring_buf->name, ring_buffer_len(ring_buf));
         print_student_info(&stu_info);
         printf("------------------------------------------\n");
     }
@@ -70,7 +70,7 @@ void *producer_proc(void *arg)
        student_info *stu_info = get_student_info(cur_time + seed);
        printf("put a student info to ring buffer.\n");
        ring_buffer_put(ring_buf, (void *)stu_info, sizeof(student_info));
-       printf("ring buffer length: %u\n", ring_buffer_len(ring_buf));
+       printf("[%s]ring buffer length: %u\n",ring_buf->name, ring_buffer_len(ring_buf));
        printf("******************************************\n");
        sleep(1);
     }
@@ -128,7 +128,7 @@ int main()
        return -1;
     }
     size = BUFFER_SIZE;
-    ring_buf = ring_buffer_init(buffer, size, f_lock);
+    ring_buf = ring_buffer_init("downstream",buffer, size, f_lock);
     if (!ring_buf)
     {
        fprintf(stderr, "Failed to init ring buffer.\n");
